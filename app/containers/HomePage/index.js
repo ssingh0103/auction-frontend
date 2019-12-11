@@ -9,6 +9,7 @@ import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import ListItem from '../../components/ListItem';
+import SearchBar from '../../components/SearchBar';
 
 const StyledDiv = styled.div`
   div[name='button'] {
@@ -60,8 +61,15 @@ export default function HomePage() {
     console.log(`bid: ${bidValue}`);
   }
 
+  function handleSearch(searchValue, category) {
+    // TO DO: Filter listings using the category and value.
+    console.log(`search category: ${category}`);
+    console.log(`search for: ${searchValue}`);
+  }
+
   return (
     <StyledDiv>
+      <SearchBar searchHandler={handleSearch} />
       {items.map(item => (
         <ListItem
           key={_.uniqueId()}

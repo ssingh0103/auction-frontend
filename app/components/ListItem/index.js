@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 
-const StyledDiv = styled.div``;
+const StyledDiv = styled.div`
+  background-color: green;
+`;
 
 export default function ListItem({ currentItem, bidHandler }) {
   // Get properties of the current item to display
