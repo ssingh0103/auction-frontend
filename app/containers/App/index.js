@@ -7,17 +7,21 @@
  *
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import HomePage from 'containers/HomePage/Loadable';
-import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import HomePage from 'containers/HomePage';
+import NotFoundPage from 'containers/NotFoundPage';
+import Header from '../../components/Header';
 
 import GlobalStyle from '../../global-styles';
 
 export default function App() {
+  const [timer, setTimer] = useState(0);
+
   return (
     <div>
+      <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
