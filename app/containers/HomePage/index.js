@@ -31,7 +31,7 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function HomePage({ user }) {
+export default function HomePage({ user, history }) {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
@@ -84,6 +84,13 @@ export default function HomePage({ user }) {
     setIsFiltered(false);
   }
 
+  function handleItemDetailClick(item) {
+    history.push({
+      pathname: `/details/${item._id}`,
+      state: { item },
+    });
+  }
+
   return (
     <StyledDiv>
       <SearchBar searchHandler={handleSearch} clearHandler={handleClear} />
@@ -108,6 +115,7 @@ export default function HomePage({ user }) {
                   currentItem={item}
                   bidHandler={handleBid}
                   isLoggedIn={user !== null}
+                  detailsClickHandler={handleItemDetailClick}
                 />
               </Grid>
             ))}
@@ -126,6 +134,7 @@ export default function HomePage({ user }) {
                   currentItem={item}
                   bidHandler={handleBid}
                   isLoggedIn={user !== null}
+                  detailsClickHandler={handleItemDetailClick}
                 />
               </Grid>
             ))}

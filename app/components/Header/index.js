@@ -21,12 +21,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ButtonAppBar({loggedIn,authenticated,isAdmin}) {
+export default function ButtonAppBar({ loggedIn, authenticated, isAdmin }) {
   const classes = useStyles();
 
-    const handleAdminClick = ()=>{
-      history.push('/admin');
-    }
+  const handleAdminClick = () => {
+    history.push('/admin');
+  };
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -39,19 +39,25 @@ export default function ButtonAppBar({loggedIn,authenticated,isAdmin}) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Timer:
-          </Typography>
-          {!authenticated && <GoogleLogin
-            clientId="59367628704-8i9re8sgggkpn7rkbfrtvgbou43g69b2.apps.googleusercontent.com"
-            buttonText="Login"
-            onSuccess={res => loggedIn(res)}
-            onFailure={err => console.log(err)}
-            cookiePolicy="single_host_origin"
-          />}
-          {isAdmin &&<Button variant="contained" color="secondary" onClick={handleAdminClick}>
-  Admin
-</Button>}
+          <Typography variant="h6" className={classes.title} />
+          {!authenticated && (
+            <GoogleLogin
+              clientId="59367628704-8i9re8sgggkpn7rkbfrtvgbou43g69b2.apps.googleusercontent.com"
+              buttonText="Login"
+              onSuccess={res => loggedIn(res)}
+              onFailure={err => console.log(err)}
+              cookiePolicy="single_host_origin"
+            />
+          )}
+          {isAdmin && (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleAdminClick}
+            >
+              Admin
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </div>

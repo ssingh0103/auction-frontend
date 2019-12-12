@@ -50,7 +50,6 @@ export default function App() {
           path="/"
           render={props => <HomePage {...props} user={user} />}
         />
-        <Route exact path="/details" component={ItemPage} />
         <Route
           exact
           path="/details/:guid"
