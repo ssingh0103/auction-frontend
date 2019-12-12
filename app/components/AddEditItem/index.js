@@ -29,7 +29,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function AddEditItem({ creating, currentItem, saveItem }) {
+export default function AddEditItem({
+  creating,
+  currentItem,
+  handleSave,
+  handleUpdate,
+}) {
   const [item, setItem] = useState({
     title: '',
     description: '',
@@ -60,7 +65,8 @@ export default function AddEditItem({ creating, currentItem, saveItem }) {
   const onSaveClick = () => {
     if (validator.allValid()) {
       // TODO: Make axios request to save item.
-      console.log(item);
+      const creating = Boolean(currentItem == null);
+      creating ? handleSave(item) : handleUpdate(item);
     } else {
       validator.showMessages();
       forceUpdate();
@@ -168,9 +174,16 @@ export default function AddEditItem({ creating, currentItem, saveItem }) {
         </div>
       </div>
       <div>
-        <Button onClick={onSaveClick} variant="contained" color="primary">
-          Save
-        </Button>
+        {currentItem == null && (
+          <Button onClick={onSaveClick} variant="contained" color="primary">
+            Save
+          </Button>
+        )}
+        {currentItem != null && (
+          <Button onClick={onSaveClick} variant="contained" color="primary">
+            Update
+          </Button>
+        )}
       </div>
     </StyledDiv>
   );

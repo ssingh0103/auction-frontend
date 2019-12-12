@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 import SimpleReactValidator from 'simple-react-validator';
 
@@ -19,13 +20,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const StyledDiv = styled.div`
+  h1 {
+    margin-left: 10px;
+  }
+
   div[class='srv-validation-message'] {
     color: #f76321;
     display: inline;
   }
+
+  div.bar {
+    display: flex;
+  }
+
+  div.section {
+    display: inline;
+  }
+
+  button {
+    margin-top: 15px;
+    margin-left: 20px;
+    height: 40px;
+  }
 `;
 
-export default function SearchBar({ searchHandler }) {
+export default function SearchBar({ searchHandler, clearHandler }) {
   // Use bid value to track state of user
   const [searchValue, setSearchValue] = useState('');
 
@@ -54,11 +73,8 @@ export default function SearchBar({ searchHandler }) {
   const [, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
   const [validator] = useState(
-    new SimpleReactValidator({ messages: { default: '*' } }),
+    new SimpleReactValidator({ messages: { default: '' } }),
   );
-
-  // Show validation if does not meet criteria.
-  validator.showMessages();
 
   // Fired to validate the input
   const onSearchClick = () => {
@@ -72,38 +88,62 @@ export default function SearchBar({ searchHandler }) {
 
   return (
     <StyledDiv>
-      <p>Search:</p>
-      <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-          Category
-        </InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={category}
-          onChange={handleChange}
-          labelWidth={labelWidth}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value="title">Title</MenuItem>
-          <MenuItem value="description">Description</MenuItem>
-          <MenuItem value="identifier">Identifier</MenuItem>
-          <MenuItem value="highestBidEmail">Highest Bidder</MenuItem>
-        </Select>
-      </FormControl>
-      <div className="section">
-        <TextField
-          id="searchValue"
-          label="Search"
-          value={searchValue}
-          onChange={handleSearchValueChange}
-        />
+      <h1>Search:</h1>
+      <div className="bar">
+        <div className="section">
+          <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
+              Category
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={category}
+              onChange={handleChange}
+              labelWidth={labelWidth}
+              error={
+                validator.message('Category', category, 'required') != null
+              }
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="title">Title</MenuItem>
+              <MenuItem value="description">Description</MenuItem>
+              <MenuItem value="identifier">Identifier</MenuItem>
+              <MenuItem value="highestBidderEmail">Highest Bidder</MenuItem>
+            </Select>
+            <FormHelperText
+              error={
+                validator.message('Category', category, 'required') != null
+              }
+            >
+              Select a category
+            </FormHelperText>
+          </FormControl>
+        </div>
+        <div className="section">
+          <TextField
+            id="searchValue"
+            label="Search"
+            value={searchValue}
+            onChange={handleSearchValueChange}
+            error={
+              validator.message('Search Value', searchValue, `required`) != null
+            }
+            helperText={
+              'Search value is required' &&
+              validator.message('Search Value', searchValue, `required`)
+            }
+          />
+        </div>
+        <Button onClick={onSearchClick} variant="contained" color="primary">
+          Search
+        </Button>
+        <Button onClick={clearHandler} variant="contained" color="secondary">
+          Clear
+        </Button>
       </div>
-      <Button onClick={onSearchClick} variant="contained" color="primary">
-        Search
-      </Button>
     </StyledDiv>
   );
 }
