@@ -44,7 +44,6 @@ export function AdminPage() {
     axios
       .get(`${backendUrl}/item`)
       .then(response => {
-        const newData = [];
         dataSetter(response.data);
         setItems(response.data);
       })
@@ -87,16 +86,13 @@ export function AdminPage() {
     const { id } = item;
 
     axios.get(`${backendUrl}/item/${id}`).then(res => {
-      console.log(res);
       setCurrentItem(res.data);
       setValue(1);
     });
   };
 
   const handleSave = item => {
-    console.log('Saving', item);
     axios.post(`${backendUrl}/item/`, item).then(res => {
-      console.log(res);
       const newItems = [...items, res.data];
       setItems(newItems);
       setValue(0);
@@ -106,28 +102,24 @@ export function AdminPage() {
   const handleUpdate = item => {
     const id = item._id;
     axios.put(`${backendUrl}/item/${id}`, item).then(res => {
-      console.log(res);
       setCurrentItem(res.data);
       setValue(0);
     });
   };
   const handleDelete = item => {
-    console.log(item);
     const { id } = item;
 
     console.log('Deleting');
     axios.delete(`${backendUrl}/item/${id}`).then(res => {
-      console.log(res);
       axios
-          .get(`${backendUrl}/item`)
-          .then(response => {
-          const newData = [];
-            dataSetter(response.data);
+        .get(`${backendUrl}/item`)
+        .then(response => {
+          dataSetter(response.data);
           setItems(response.data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
     });
   };
   return (
