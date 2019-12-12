@@ -12,17 +12,16 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage';
 import ItemPage from 'containers/ItemPage';
-import ManageItemPage from 'containers/ManageItemPage';
 import NotFoundPage from 'containers/NotFoundPage';
-import Header from '../../components/Header';
 import AdminPage from 'containers/AdminPage';
+import Header from '../../components/Header';
 import GlobalStyle from '../../global-styles';
-import {admins} from '../../constants';
+import { admins } from '../../constants';
 
 export default function App() {
   const [timer, setTimer] = useState(0);
   const [user, setUser] = useState(null);
-  const [isAdmin,setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const loggedIn = profile => {
     const newUser = {
@@ -31,7 +30,7 @@ export default function App() {
       surname: profile.profileObj.familyName,
     };
     setUser(newUser);
-    if(admins.indexOf(profile.profileObj.email)>=0){
+    if (admins.indexOf(profile.profileObj.email) >= 0) {
       setIsAdmin(true);
     }
   };
@@ -39,24 +38,16 @@ export default function App() {
   console.log(isAdmin);
   return (
     <div>
-      <Header loggedIn={loggedIn} authenticated={user !== null} isAdmin={isAdmin}/>
+      <Header
+        loggedIn={loggedIn}
+        authenticated={user !== null}
+        isAdmin={isAdmin}
+      />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/details" component={ItemPage} />
         <Route exact path="/admin" component={AdminPage} />
-
-        <Route
-          exact
-          path="/manage/:guid"
-          render={props => <ManageItemPage {...props} creating={false} />}
-        />
-        <Route
-          exact
-          path="/manage"
-          render={props => <ManageItemPage {...props} creating />}
-        />
         <Route component={NotFoundPage} />
-
       </Switch>
       <GlobalStyle />
     </div>

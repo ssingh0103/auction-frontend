@@ -14,7 +14,7 @@ import axios from 'axios';
 
 import ListItem from '../../components/ListItem';
 import SearchBar from '../../components/SearchBar';
-import {backendUrl} from '../../constants';
+import { backendUrl } from '../../constants';
 
 const StyledDiv = styled.div`
   padding: 20px;
@@ -91,19 +91,6 @@ export default function HomePage({ history }) {
     console.log(`search for: ${searchValue}`);
   }
 
-  function handleEdit() {
-    history.push({
-      pathname: `/manage/${1}`,
-      state: { item: items[0] },
-    });
-  }
-  function handleCreate() {
-    history.push({
-      pathname: `/manage`,
-      state: { item: {} },
-    });
-  }
-
   return (
     <StyledDiv>
       <SearchBar searchHandler={handleSearch} />
@@ -124,8 +111,6 @@ export default function HomePage({ history }) {
           ))}
         </Grid>
       </div>
-      <Button onClick={handleCreate}>Create</Button>
-      <Button onClick={handleEdit}>Edit</Button>
     </StyledDiv>
   );
 }

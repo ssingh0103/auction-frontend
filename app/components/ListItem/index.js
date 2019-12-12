@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import SimpleReactValidator from 'simple-react-validator';
 
 const StyledDiv = styled.div`
@@ -57,7 +57,7 @@ export default function ListItem({ currentItem, bidHandler }) {
   const [, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
   const [validator] = useState(
-    new SimpleReactValidator({ messages: { default: '*' } }),
+    new SimpleReactValidator({ messages: { default: '' } }),
   );
 
   // Show validation if does not meet criteria.
@@ -91,20 +91,24 @@ export default function ListItem({ currentItem, bidHandler }) {
         <div>Minimum increment: {incrementBid}</div>
 
         <div className="section">
-          <label htmlFor="bidValue" name="title">
-            Bid Value
-            <span>
-              {validator.message(
+          <TextField
+            id="bidValue"
+            label="Bid Value"
+            error={
+              validator.message(
                 'Bid Value',
                 bidValue,
                 `required|currency|min:${maxBidValue},num`,
-              )}
-            </span>
-          </label>
-          <input
-            type="bidValue"
-            name="bidValue"
-            id="bidValue"
+              ) != null
+            }
+            helperText={
+              'Bid value is required' &&
+              validator.message(
+                'Bid Value',
+                bidValue,
+                `required|currency|min:${maxBidValue},num`,
+              )
+            }
             value={bidValue}
             onChange={handleBidChange}
           />
