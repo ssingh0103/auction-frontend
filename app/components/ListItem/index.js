@@ -6,7 +6,12 @@ import SimpleReactValidator from 'simple-react-validator';
 const StyledDiv = styled.div`
   display: flex;
   background-color: #ffffff;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.22);
+  border: 0.5px;
+  border-style: solid;
+
+  &:hover {
+    box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
 
   div.info {
     margin: 20px 5px 20px 5px;
@@ -36,7 +41,12 @@ const ImageDiv = styled.div`
   text-align: center;
 `;
 
-export default function ListItem({ currentItem, bidHandler, isLoggedIn }) {
+export default function ListItem({
+  currentItem,
+  bidHandler,
+  isLoggedIn,
+  detailsClickHandler,
+}) {
   // Get properties of the current item to display
   const {
     title,
@@ -75,8 +85,12 @@ export default function ListItem({ currentItem, bidHandler, isLoggedIn }) {
     }
   };
 
+  const clickHandler = isLoggedIn
+    ? () => detailsClickHandler(currentItem)
+    : () => {};
+
   return (
-    <StyledDiv>
+    <StyledDiv onClick={clickHandler}>
       <ImageDiv>Image</ImageDiv>
       <div className="info">
         <div className="itemTitle">
