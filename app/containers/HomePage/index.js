@@ -9,7 +9,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
-import { Button } from '@material-ui/core';
 import axios from 'axios';
 
 import ListItem from '../../components/ListItem';
@@ -32,7 +31,7 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function HomePage() {
+export default function HomePage({ user }) {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
@@ -51,15 +50,32 @@ export default function HomePage() {
 
   // This function makes an api call to bid on an item.
   function handleBid(item, bidValue) {
-    console.log(`clicked on id: ${item.id}`);
-    console.log(`bid: ${bidValue}`);
+    const updatedItem = {
+      ...item,
+      highestBid: bidValue,
+      highestBidderEmail: user.email,
+      highestBidderName: `${user.name} ${user.surname}`,
+    };
+    console.log(updatedItem);
+    axios.put(`${backendUrl}/item/highbid/${item._id}`, item).then(res => {
+      axios
+        .get(`${backendUrl}/item`)
+        .then(response => {
+          setItems(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
   }
 
   function handleSearch(searchValue, category) {
-    const filteredItems = items.filter(
-      item => item[category] != null && item[category].includes(searchValue),
+    const tempItems = items.filter(
+      item =>
+        item[category] != null &&
+        item[category].toLowerCase().includes(searchValue.toLowerCase()),
     );
-    setFilteredItems(filteredItems);
+    setFilteredItems(tempItems);
     setIsFiltered(true);
   }
 
@@ -87,7 +103,11 @@ export default function HomePage() {
                 xl={6}
                 key={_.uniqueId('cardId_')}
               >
-                <ListItem currentItem={item} bidHandler={handleBid} />
+                <ListItem
+                  currentItem={item}
+                  bidHandler={handleBid}
+                  isLoggedIn={user !== null}
+                />
               </Grid>
             ))}
           {isFiltered &&
@@ -101,7 +121,11 @@ export default function HomePage() {
                 xl={6}
                 key={_.uniqueId('cardId_')}
               >
-                <ListItem currentItem={item} bidHandler={handleBid} />
+                <ListItem
+                  currentItem={item}
+                  bidHandler={handleBid}
+                  isLoggedIn={user !== null}
+                />
               </Grid>
             ))}
         </Grid>
