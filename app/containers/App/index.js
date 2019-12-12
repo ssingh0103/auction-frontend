@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage';
+import ItemPage from 'containers/ItemPage';
 import NotFoundPage from 'containers/NotFoundPage';
 import Header from '../../components/Header';
 
@@ -24,6 +25,7 @@ export default function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
+        <Route exact path="/details" component={ItemPage} />
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
