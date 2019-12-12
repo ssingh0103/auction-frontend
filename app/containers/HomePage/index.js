@@ -26,47 +26,17 @@ const StyledDiv = styled.div`
   div.listing {
     margin: 10px;
   }
+
+  h2 {
+    margin-left: 20px;
+  }
 `;
 
-// // Mocking the api call returning items list.
-// const items = [
-//   {
-//     id: 1,
-//     title: 'Chair 1',
-//     description: 'Description',
-//     identifier: 'ch_1',
-//     startingBid: 10,
-//     minIncrement: 1,
-//     highestBidValue: 11,
-//     highestBidEmail: 'jupatel@xactlycorp.com',
-//     highestBidName: 'Jugal Patel',
-//   },
-//   {
-//     id: 2,
-//     title: 'Chair 2',
-//     description: 'Description',
-//     identifier: 'ch_2',
-//     startingBid: 10,
-//     minIncrement: 1,
-//     highestBidValue: 12,
-//     highestBidEmail: 'ssingh@xactlycorp.com',
-//     highestBidName: 'Sunil Singh',
-//   },
-//   {
-//     id: 3,
-//     title: 'Desk 1',
-//     description: 'Description',
-//     identifier: 'dk_1',
-//     startingBid: 25,
-//     minIncrement: 1,
-//     highestBidValue: 27,
-//     highestBidEmail: 'jupatel@xactlycorp.com',
-//     highestBidName: 'Jugal Patel',
-//   },
-// ];
-
-export default function HomePage({ history }) {
+export default function HomePage() {
   const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [isFiltered, setIsFiltered] = useState(false);
+
   // Load the data from the backend.
   useEffect(() => {
     axios
@@ -86,29 +56,54 @@ export default function HomePage({ history }) {
   }
 
   function handleSearch(searchValue, category) {
-    // TO DO: Filter listings using the category and value.
-    console.log(`search category: ${category}`);
-    console.log(`search for: ${searchValue}`);
+    const filteredItems = items.filter(
+      item => item[category] != null && item[category].includes(searchValue),
+    );
+    setFilteredItems(filteredItems);
+    setIsFiltered(true);
+  }
+
+  function handleClear() {
+    setIsFiltered(false);
   }
 
   return (
     <StyledDiv>
-      <SearchBar searchHandler={handleSearch} />
+      <SearchBar searchHandler={handleSearch} clearHandler={handleClear} />
       <div className="listing">
         <Grid container spacing={3}>
-          {items.map(item => (
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={6}
-              lg={6}
-              xl={6}
-              key={_.uniqueId('cardId_')}
-            >
-              <ListItem currentItem={item} bidHandler={handleBid} />
-            </Grid>
-          ))}
+          {!isFiltered && items.length === 0 && <h2>No items found.</h2>}
+          {isFiltered && filteredItems.length === 0 && (
+            <h2>No items found with that criteria.</h2>
+          )}
+          {!isFiltered &&
+            items.map(item => (
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={6}
+                lg={6}
+                xl={6}
+                key={_.uniqueId('cardId_')}
+              >
+                <ListItem currentItem={item} bidHandler={handleBid} />
+              </Grid>
+            ))}
+          {isFiltered &&
+            filteredItems.map(item => (
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={6}
+                lg={6}
+                xl={6}
+                key={_.uniqueId('cardId_')}
+              >
+                <ListItem currentItem={item} bidHandler={handleBid} />
+              </Grid>
+            ))}
         </Grid>
       </div>
     </StyledDiv>
