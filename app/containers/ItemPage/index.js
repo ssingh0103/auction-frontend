@@ -63,11 +63,7 @@ export default function ItemPage() {
         bidHandler={handleBid}
       />
       <br />
-      <BidHistory
-        key={_.uniqueId()}
-        currentItem={itemHistory}
-        bidHandler={handleBid}
-      />
+      <BidHistory key={_.uniqueId()} currentItems={itemHistory} />
     </StyledDiv>
   );
 }
