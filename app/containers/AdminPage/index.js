@@ -25,6 +25,7 @@ import { columnDefs } from './gridHeaders';
 import { backendUrl } from '../../constants';
 import axios from 'axios';
 import AdminList from 'components/AdminList';
+import AddEditItem from '../../components/AddEditItem';
 
 export function AdminPage() {
   useInjectReducer({ key: 'adminPage', reducer });
@@ -32,6 +33,7 @@ export function AdminPage() {
 
   const [value, setValue] = React.useState(0);
   const [data, setData] = useState(null);
+  const [items, setItems] = useState(null);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -40,6 +42,7 @@ export function AdminPage() {
     axios
       .get(`${backendUrl}/item`)
       .then(response => {
+        setItems(response.data);
         const newData = [];
         response.data.forEach(item => {
           const temp = {};
@@ -65,10 +68,11 @@ export function AdminPage() {
         aria-label="simple tabs example"
       >
         <Tab label="List" />
-        <Tab label="Item Two" />
+        <Tab label="Add Item" />
         <Tab label="Item Three" />
       </Tabs>
-      <AdminList data={data} />
+      {value == 0 && <AdminList data={data} />}
+      {value == 1 && <AddEditItem />}
     </div>
   );
 }

@@ -39,8 +39,10 @@ export default function AddEditItem({ creating, currentItem, saveItem }) {
   });
 
   useEffect(() => {
-    const tmpCopy = _.cloneDeep(currentItem);
-    setItem(tmpCopy);
+    if (currentItem != null) {
+      const tmpCopy = _.cloneDeep(currentItem);
+      setItem(tmpCopy);
+    }
   }, [currentItem]);
 
   const handleFieldChange = event => {
