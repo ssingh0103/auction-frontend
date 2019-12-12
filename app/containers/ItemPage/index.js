@@ -65,7 +65,16 @@ export default function ItemPage(props) {
     axios.get(`${backendUrl}/item/${id}`).then(res => {
       console.log(res);
       setItem(res.data);
-      setItemHistory(res.data.history);
+      const his = [...res.data.history];
+      his.sort(function(a, b) {
+        const keyA = a.highestBid;
+        const keyB = b.highestBid;
+        // Compare the 2 dates
+        if (keyA < keyB) return 1;
+        if (keyA > keyB) return -1;
+        return 0;
+      });
+      setItemHistory(his);
     });
   }, []);
 
