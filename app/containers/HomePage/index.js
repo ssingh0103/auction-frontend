@@ -52,21 +52,22 @@ export default function HomePage({ user }) {
   function handleBid(item, bidValue) {
     const updatedItem = {
       ...item,
-      highestBid: bidValue,
+      highestBid: parseInt(bidValue),
       highestBidderEmail: user.email,
       highestBidderName: `${user.name} ${user.surname}`,
     };
-    console.log(updatedItem);
-    axios.put(`${backendUrl}/item/highbid/${item._id}`, item).then(res => {
-      axios
-        .get(`${backendUrl}/item`)
-        .then(response => {
-          setItems(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    });
+    axios
+      .put(`${backendUrl}/item/highbid/${item._id}`, updatedItem)
+      .then(res => {
+        axios
+          .get(`${backendUrl}/item`)
+          .then(response => {
+            setItems(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      });
   }
 
   function handleSearch(searchValue, category) {
