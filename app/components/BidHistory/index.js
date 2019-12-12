@@ -25,21 +25,22 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function BidHistory({ currentItem, bidHandler }) {
-  // Get properties of the current item to display
-  const {
-    itemId,
-    highestBid,
-    highestBidderEmail,
-    highestBidderName,
-  } = currentItem;
-
+export default function BidHistory({ currentItems }) {
   return (
     <StyledDiv>
+      <table border="1">
+        <tbody>
+          {currentItems.map(item => (
+            <tr key={item.id}>
+              <td>{item.highestBidderName}</td>
+              <td>{item.highestBidderEmail}</td>
+              <td>{item.highestBid}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <div className="info">
-        <div>Highest bidder name : {highestBidderName || 'No bids yet'}</div>
-        <div>Highest bidder email: {highestBidderEmail || 'No bids yet'}</div>
-        <div>Highest bid: {highestBid || 'No bids yet'}</div>
+        {currentItems.length === 0 && <h6>No bids yet</h6>}
       </div>
     </StyledDiv>
   );
