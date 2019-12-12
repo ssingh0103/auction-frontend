@@ -57,6 +57,10 @@ export function AdminPage() {
       });
   }, []);
 
+  const handleEdit = item => {
+    console.log(item);
+  };
+
   return (
     <div>
       <Tabs
