@@ -43,10 +43,10 @@ export default function ListItem({ currentItem, bidHandler }) {
     highestBidderEmail,
     incrementBid,
   } = currentItem;
-  const maxBidValue = highestBid || startingBid;
+  const maxBidValue = highestBid ? highestBid + incrementBid : startingBid;
 
   // Use bid value to track state of user
-  const [bidValue, setBidValue] = useState(maxBidValue + incrementBid);
+  const [bidValue, setBidValue] = useState(maxBidValue);
 
   // Handler for updating bid value
   const handleBidChange = value => {
@@ -78,8 +78,16 @@ export default function ListItem({ currentItem, bidHandler }) {
       <ImageDiv>Image</ImageDiv>
       <div className="info">
         <div className="itemTitle">Title: {title}</div>
-        <div>Current bid: {maxBidValue}</div>
-        <div>Highest bidder: {highestBidderEmail || 'No bids yeet'}</div>
+        <div>
+          {highestBid
+            ? `Current Bid:${highestBid}`
+            : `Minimum Bid:${startingBid}`}
+        </div>
+        <div>
+          {highestBid
+            ? `Highest bidder: ${highestBidderEmail}`
+            : 'No bids yet.'}
+        </div>
         <div>Minimum increment: {incrementBid}</div>
 
         <div className="section">
@@ -89,7 +97,7 @@ export default function ListItem({ currentItem, bidHandler }) {
               {validator.message(
                 'Bid Value',
                 bidValue,
-                `required|currency|min:${maxBidValue + incrementBid},num`,
+                `required|currency|min:${maxBidValue},num`,
               )}
             </span>
           </label>
