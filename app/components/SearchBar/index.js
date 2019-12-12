@@ -29,16 +29,18 @@ export default function SearchBar({ searchHandler }) {
     setSearchValue(value.target.value);
   };
 
+  // Code for dropdown.
   const classes = useStyles();
   const [category, setCategory] = React.useState('');
-
   const inputLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
 
+  // Updates the label width for the dropdown.
   React.useEffect(() => {
     setLabelWidth(inputLabel.current.offsetWidth);
   }, []);
 
+  // Change handler for dropdown.
   const handleChange = event => {
     setCategory(event.target.value);
   };

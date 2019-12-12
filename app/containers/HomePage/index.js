@@ -8,12 +8,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
+import Grid from '@material-ui/core/Grid';
 import ListItem from '../../components/ListItem';
 import SearchBar from '../../components/SearchBar';
 
 const StyledDiv = styled.div`
+  padding: 20px;
+
   div[name='button'] {
     margin-top: 20px;
+  }
+
+  div.listing {
+    margin: 10px;
   }
 `;
 
@@ -70,13 +77,23 @@ export default function HomePage() {
   return (
     <StyledDiv>
       <SearchBar searchHandler={handleSearch} />
-      {items.map(item => (
-        <ListItem
-          key={_.uniqueId()}
-          currentItem={item}
-          bidHandler={handleBid}
-        />
-      ))}
+      <div className="listing">
+        <Grid container spacing={3}>
+          {items.map(item => (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={6}
+              xl={6}
+              key={_.uniqueId('cardId_')}
+            >
+              <ListItem currentItem={item} bidHandler={handleBid} />
+            </Grid>
+          ))}
+        </Grid>
+      </div>
     </StyledDiv>
   );
 }
