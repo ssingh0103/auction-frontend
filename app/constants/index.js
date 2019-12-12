@@ -1,4 +1,7 @@
 const backendUrl = 'http://localhost:8080';
+const admins = ["vaghayev@xactlycorp.com"]
 
-
-export default backendUrl;
+export  {
+    backendUrl,
+    admins
+};

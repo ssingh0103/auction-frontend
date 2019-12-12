@@ -14,7 +14,7 @@ import axios from 'axios';
 
 import ListItem from '../../components/ListItem';
 import SearchBar from '../../components/SearchBar';
-import backendUrl from '../../constants';
+import {backendUrl} from '../../constants';
 
 const StyledDiv = styled.div`
   padding: 20px;

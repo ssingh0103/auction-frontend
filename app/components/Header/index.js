@@ -4,10 +4,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import GoogleLogin from 'react-google-login';
-
+import history from 'utils/history';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -20,9 +21,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ButtonAppBar({loggedIn,authenticated}) {
+export default function ButtonAppBar({loggedIn,authenticated,isAdmin}) {
   const classes = useStyles();
-  console.log(authenticated)
+
+    const handleAdminClick = ()=>{
+      history.push('/admin');
+    }
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -45,6 +49,9 @@ export default function ButtonAppBar({loggedIn,authenticated}) {
             onFailure={err => console.log(err)}
             cookiePolicy="single_host_origin"
           />}
+          {isAdmin &&<Button variant="contained" color="secondary" onClick={handleAdminClick}>
+  Admin
+</Button>}
         </Toolbar>
       </AppBar>
     </div>

@@ -15,12 +15,14 @@ import ItemPage from 'containers/ItemPage';
 import ManageItemPage from 'containers/ManageItemPage';
 import NotFoundPage from 'containers/NotFoundPage';
 import Header from '../../components/Header';
-
+import AdminPage from 'containers/AdminPage';
 import GlobalStyle from '../../global-styles';
+import {admins} from '../../constants';
 
 export default function App() {
   const [timer, setTimer] = useState(0);
   const [user, setUser] = useState(null);
+  const [isAdmin,setIsAdmin] = useState(false);
 
   const loggedIn = profile => {
     const newUser = {
@@ -29,15 +31,20 @@ export default function App() {
       surname: profile.profileObj.familyName,
     };
     setUser(newUser);
+    if(admins.indexOf(profile.profileObj.email)>=0){
+      setIsAdmin(true);
+    }
   };
-  console.log('User is', user);
 
+  console.log(isAdmin);
   return (
     <div>
-      <Header loggedIn={loggedIn} authenticated={user !== null} />
+      <Header loggedIn={loggedIn} authenticated={user !== null} isAdmin={isAdmin}/>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/details" component={ItemPage} />
+        <Route exact path="/admin" component={AdminPage} />
+
         <Route
           exact
           path="/manage/:guid"
@@ -49,6 +56,7 @@ export default function App() {
           render={props => <ManageItemPage {...props} creating />}
         />
         <Route component={NotFoundPage} />
+
       </Switch>
       <GlobalStyle />
     </div>
