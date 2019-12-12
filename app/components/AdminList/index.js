@@ -18,6 +18,7 @@ class Actions extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleClick(e) {
@@ -27,11 +28,22 @@ class Actions extends React.Component {
     this.props.handleClick(rowData);
   }
 
+  handleDelete(e) {
+    e.preventDefault();
+
+    const rowData = this.props.data;
+    this.props.handleDelete(rowData);
+  }
+
   render() {
     // put in render logic
     return (
       <div>
         <a href="" onClick={this.handleClick}>
+          Edit
+        </a>
+        <span> ||</span>
+        <a href="" onClick={this.handleDelete}>
           Delete
         </a>
       </div>
@@ -39,28 +51,22 @@ class Actions extends React.Component {
   }
 }
 
-const newColumnDefs = [
-  ...columnDefs,
-  {
-    headerName: 'Edit',
-    cellRendererFramework: Actions,
-    cellRendererParams: {
-      handleClick: item => console.log(item),
-    },
-  },
-];
-
-function AdminList({ data }) {
+function AdminList({ data, handleEdit, handleDelete }) {
   const onGridReady = params => {
     params.api.resetRowHeights();
   };
-  //  columnDefs.push({
-  //   headerName: 'Button Col 1',
-  //   cellRenderer: 'buttonRenderer',
-  //   cellRendererParams: {
-  //     onClick: (item)=>console.log(item),
-  //     label: 'Click'
-  //  });
+
+  const newColumnDefs = [
+    ...columnDefs,
+    {
+      headerName: 'Edit',
+      cellRendererFramework: Actions,
+      cellRendererParams: {
+        handleClick: item => handleEdit(item),
+        handleDelete: item => handleDelete(item),
+      },
+    },
+  ];
 
   return (
     <div

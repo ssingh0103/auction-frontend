@@ -34,36 +34,102 @@ export function AdminPage() {
   const [value, setValue] = React.useState(0);
   const [data, setData] = useState(null);
   const [items, setItems] = useState(null);
+  const [currentItem, setCurrentItem] = useState(null);
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setCurrentItem(null);
   };
 
   useEffect(() => {
     axios
       .get(`${backendUrl}/item`)
       .then(response => {
-        setItems(response.data);
         const newData = [];
-        response.data.forEach(item => {
-          const temp = {};
-          temp.id = item.identifier;
-          temp.title = item.title;
-          temp.hb = item.highestBid;
-          temp.hbe = item.highestBidderEmail;
-          temp.hbn = item.highestBidderName;
-          newData.push(temp);
-        });
-        setData(newData);
+        dataSetter(response.data);
+        setItems(response.data);
       })
       .catch(error => {
         console.log(error);
       });
   }, []);
 
-  const handleEdit = item => {
-    console.log(item);
+  const dataSetter = items => {
+    const newData = [];
+    items.forEach(item => {
+      const temp = {};
+      temp.id = item._id;
+      temp.identifier = item.identifier;
+      temp.title = item.title;
+      temp.hb = item.highestBid;
+      temp.hbe = item.highestBidderEmail;
+      temp.hbn = item.highestBidderName;
+      newData.push(temp);
+    });
+    setData(newData);
   };
 
+  useEffect(() => {
+    if (value == 0) {
+      axios
+        .get(`${backendUrl}/item`)
+        .then(response => {
+          const newData = [];
+          dataSetter(response.data);
+          setItems(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }, [value]);
+
+  const handleEdit = item => {
+    const { id } = item;
+
+    axios.get(`${backendUrl}/item/${id}`).then(res => {
+      console.log(res);
+      setCurrentItem(res.data);
+      setValue(1);
+    });
+  };
+
+  const handleSave = item => {
+    console.log('Saving', item);
+    axios.post(`${backendUrl}/item/`, item).then(res => {
+      console.log(res);
+      const newItems = [...items, res.data];
+      setItems(newItems);
+      setValue(0);
+    });
+  };
+
+  const handleUpdate = item => {
+    const id = item._id;
+    axios.put(`${backendUrl}/item/${id}`, item).then(res => {
+      console.log(res);
+      setCurrentItem(res.data);
+      setValue(0);
+    });
+  };
+  const handleDelete = item => {
+    console.log(item);
+    const { id } = item;
+
+    console.log('Deleting');
+    axios.delete(`${backendUrl}/item/${id}`).then(res => {
+      console.log(res);
+      axios
+          .get(`${backendUrl}/item`)
+          .then(response => {
+          const newData = [];
+            dataSetter(response.data);
+          setItems(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    });
+  };
   return (
     <div>
       <Tabs
@@ -72,11 +138,23 @@ export function AdminPage() {
         aria-label="simple tabs example"
       >
         <Tab label="List" />
-        <Tab label="Add Item" />
+        <Tab label="Add/Edit Item" />
         <Tab label="Item Three" />
       </Tabs>
-      {value == 0 && <AdminList data={data} />}
-      {value == 1 && <AddEditItem />}
+      {value == 0 && (
+        <AdminList
+          data={data}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+        />
+      )}
+      {value == 1 && (
+        <AddEditItem
+          currentItem={currentItem}
+          handleSave={handleSave}
+          handleUpdate={handleUpdate}
+        />
+      )}
     </div>
   );
 }
