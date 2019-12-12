@@ -95,7 +95,7 @@ export default function ListItem({ currentItem, bidHandler }) {
         </div>
 
         <div>
-          <Button onClick={onBidClick} color="primary">
+          <Button onClick={onBidClick} variant="contained" color="primary">
             Bid
           </Button>
         </div>
