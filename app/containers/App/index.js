@@ -46,6 +46,11 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/details" component={ItemPage} />
+        <Route
+          exact
+          path="/details/:guid"
+          render={props => <ItemPage {...props} user={user} />}
+        />
         <Route exact path="/admin" component={AdminPage} />
         <Route component={NotFoundPage} />
       </Switch>

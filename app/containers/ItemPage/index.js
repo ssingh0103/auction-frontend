@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
+import axios from 'axios';
 import ItemDetails from '../../components/ItemDetails';
 import BidHistory from '../../components/BidHistory';
+import { backendUrl } from '../../constants';
 
 const StyledDiv = styled.div`
   div[name='button'] {
@@ -10,18 +12,18 @@ const StyledDiv = styled.div`
   }
 `;
 
-// Mocking the api call returning items list.
-const item = {
-  id: 1,
-  title: 'Chair 1',
-  description: 'Description',
-  identifier: 'ch_1',
-  startingBid: 10,
-  incrementBid: 1,
-  highestBid: 11,
-  highestBidderEmail: 'jupatel@xactlycorp.com',
-  highestBidderName: 'Jugal Patel',
-};
+// // Mocking the api call returning items list.
+// const item = {
+//   id: 1,
+//   title: 'Chair 1',
+//   description: 'Description',
+//   identifier: 'ch_1',
+//   startingBid: 10,
+//   incrementBid: 1,
+//   highestBid: 11,
+//   highestBidderEmail: 'jupatel@xactlycorp.com',
+//   highestBidderName: 'Jugal Patel',
+// };
 
 // Mocking the api call returning items list.
 const itemHistory = [
@@ -48,20 +50,33 @@ const itemHistory = [
   },
 ];
 
-export default function ItemPage() {
+export default function ItemPage(props) {
   // This function makes an api call to bid on an item.
+  const [item, setItem] = useState(null);
   function handleBid(item, bidValue) {
     console.log(`clicked on id: ${item.id}`);
     console.log(`bid: ${bidValue}`);
   }
 
+  console.log(props);
+  useEffect(() => {
+    const id = props.match.params.guid;
+    console.log(id);
+    axios.get(`${backendUrl}/item/${id}`).then(res => {
+      console.log(res);
+      setItem(res.data);
+    });
+  }, []);
+
   return (
     <StyledDiv>
-      <ItemDetails
-        key={_.uniqueId()}
-        currentItem={item}
-        bidHandler={handleBid}
-      />
+      {item !== null && (
+        <ItemDetails
+          key={_.uniqueId()}
+          currentItem={item}
+          bidHandler={handleBid}
+        />
+      )}
       <br />
       <BidHistory key={_.uniqueId()} currentItems={itemHistory} />
     </StyledDiv>
