@@ -36,10 +36,10 @@ const ImageDiv = styled.div`
 
 export default function ListItem({ currentItem, bidHandler }) {
   // Get properties of the current item to display
-  const { title, highestBidValue, highestBidName, minIncrement } = currentItem;
+  const { title, highestBid, highestBidderEmail, incrementBid } = currentItem;
 
   // Use bid value to track state of user
-  const [bidValue, setBidValue] = useState(highestBidValue + minIncrement);
+  const [bidValue, setBidValue] = useState(highestBid + incrementBid);
 
   // Handler for updating bid value
   const handleBidChange = value => {
@@ -71,9 +71,9 @@ export default function ListItem({ currentItem, bidHandler }) {
       <ImageDiv>Image</ImageDiv>
       <div className="info">
         <div className="itemTitle">Title: {title}</div>
-        <div>Current bid: {highestBidValue}</div>
-        <div>Highest bidder: {highestBidName}</div>
-        <div>Minimum increment: {minIncrement}</div>
+        <div>Current bid: {highestBid}</div>
+        <div>Highest bidder: {highestBidderEmail}</div>
+        <div>Minimum increment: {incrementBid}</div>
 
         <div className="section">
           <label htmlFor="bidValue" name="title">
@@ -82,7 +82,7 @@ export default function ListItem({ currentItem, bidHandler }) {
               {validator.message(
                 'Bid Value',
                 bidValue,
-                `required|currency|min:${highestBidValue + minIncrement},num`,
+                `required|currency|min:${highestBid + incrementBid},num`,
               )}
             </span>
           </label>

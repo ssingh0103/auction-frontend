@@ -5,15 +5,16 @@
  *
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
+import axios from 'axios';
+
 import ListItem from '../../components/ListItem';
 import SearchBar from '../../components/SearchBar';
-import axios from 'axios';
-import url from '../../constants'
+import backendUrl from '../../constants';
 
 const StyledDiv = styled.div`
   padding: 20px;
@@ -27,46 +28,56 @@ const StyledDiv = styled.div`
   }
 `;
 
-// Mocking the api call returning items list.
-const items = [
-  {
-    id: 1,
-    title: 'Chair 1',
-    description: 'Description',
-    identifier: 'ch_1',
-    startingBid: 10,
-    minIncrement: 1,
-    highestBidValue: 11,
-    highestBidEmail: 'jupatel@xactlycorp.com',
-    highestBidName: 'Jugal Patel',
-  },
-  {
-    id: 2,
-    title: 'Chair 2',
-    description: 'Description',
-    identifier: 'ch_2',
-    startingBid: 10,
-    minIncrement: 1,
-    highestBidValue: 12,
-    highestBidEmail: 'ssingh@xactlycorp.com',
-    highestBidName: 'Sunil Singh',
-  },
-  {
-    id: 3,
-    title: 'Desk 1',
-    description: 'Description',
-    identifier: 'dk_1',
-    startingBid: 25,
-    minIncrement: 1,
-    highestBidValue: 27,
-    highestBidEmail: 'jupatel@xactlycorp.com',
-    highestBidName: 'Jugal Patel',
-  },
-];
+// // Mocking the api call returning items list.
+// const items = [
+//   {
+//     id: 1,
+//     title: 'Chair 1',
+//     description: 'Description',
+//     identifier: 'ch_1',
+//     startingBid: 10,
+//     minIncrement: 1,
+//     highestBidValue: 11,
+//     highestBidEmail: 'jupatel@xactlycorp.com',
+//     highestBidName: 'Jugal Patel',
+//   },
+//   {
+//     id: 2,
+//     title: 'Chair 2',
+//     description: 'Description',
+//     identifier: 'ch_2',
+//     startingBid: 10,
+//     minIncrement: 1,
+//     highestBidValue: 12,
+//     highestBidEmail: 'ssingh@xactlycorp.com',
+//     highestBidName: 'Sunil Singh',
+//   },
+//   {
+//     id: 3,
+//     title: 'Desk 1',
+//     description: 'Description',
+//     identifier: 'dk_1',
+//     startingBid: 25,
+//     minIncrement: 1,
+//     highestBidValue: 27,
+//     highestBidEmail: 'jupatel@xactlycorp.com',
+//     highestBidName: 'Jugal Patel',
+//   },
+// ];
 
 export default function HomePage({ history }) {
+  const [items, setItems] = useState([]);
   // Load the data from the backend.
-  useEffect(() => {}, []);
+  useEffect(() => {
+    axios
+      .get(`${backendUrl}/item`)
+      .then(response => {
+        setItems(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
 
   // This function makes an api call to bid on an item.
   function handleBid(item, bidValue) {
@@ -80,11 +91,6 @@ export default function HomePage({ history }) {
     console.log(`search for: ${searchValue}`);
   }
 
-  useEffect(()=>{
-    axios.get(url+'/item').then(res=>{
-      console.log(res);
-    })
-  })
   function handleEdit() {
     history.push({
       pathname: `/manage/${1}`,
