@@ -29,12 +29,19 @@ export default function BidHistory({ currentItems }) {
   return (
     <StyledDiv>
       <table border="1">
+        <thead>
+          <tr>
+            <th>&nbsp;Name&nbsp;</th>
+            <th>&nbsp;Email&nbsp;</th>
+            <th>&nbsp;Bid Amount&nbsp;</th>
+          </tr>
+        </thead>
         <tbody>
           {currentItems.map(item => (
             <tr key={item.id}>
-              <td>{item.highestBidderName}</td>
-              <td>{item.highestBidderEmail}</td>
-              <td>{item.highestBid}</td>
+              <td>&nbsp;{item.highestBidderName}&nbsp;</td>
+              <td>&nbsp;{item.highestBidderEmail}&nbsp;</td>
+              <td align="center">&nbsp;{item.highestBid}&nbsp;</td>
             </tr>
           ))}
         </tbody>
