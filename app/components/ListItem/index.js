@@ -9,10 +9,10 @@ const StyledDiv = styled.div`
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.22);
 
   div.info {
-    margin: 20px;
+    margin: 20px 5px 20px 5px;
   }
 
-  div.title {
+  div.itemTitle {
     color: #346f8f;
   }
 
@@ -70,13 +70,13 @@ export default function ListItem({ currentItem, bidHandler }) {
     <StyledDiv>
       <ImageDiv>Image</ImageDiv>
       <div className="info">
-        <div className="title">Title: {title}</div>
+        <div className="itemTitle">Title: {title}</div>
         <div>Current bid: {highestBidValue}</div>
         <div>Highest bidder: {highestBidName}</div>
         <div>Minimum increment: {minIncrement}</div>
 
         <div className="section">
-          <label htmlFor="schemaName" name="title">
+          <label htmlFor="bidValue" name="title">
             Bid Value
             <span>
               {validator.message(
@@ -87,6 +87,7 @@ export default function ListItem({ currentItem, bidHandler }) {
             </span>
           </label>
           <input
+            type="bidValue"
             name="bidValue"
             id="bidValue"
             value={bidValue}

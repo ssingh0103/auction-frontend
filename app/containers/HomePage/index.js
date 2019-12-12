@@ -5,10 +5,11 @@
  *
  */
 
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
+import { Button } from '@material-ui/core';
 import ListItem from '../../components/ListItem';
 import SearchBar from '../../components/SearchBar';
 import axios from 'axios';
@@ -63,7 +64,10 @@ const items = [
   },
 ];
 
-export default function HomePage() {
+export default function HomePage({ history }) {
+  // Load the data from the backend.
+  useEffect(() => {}, []);
+
   // This function makes an api call to bid on an item.
   function handleBid(item, bidValue) {
     console.log(`clicked on id: ${item.id}`);
@@ -81,6 +85,18 @@ export default function HomePage() {
       console.log(res);
     })
   })
+  function handleEdit() {
+    history.push({
+      pathname: `/manage/${1}`,
+      state: { item: items[0] },
+    });
+  }
+  function handleCreate() {
+    history.push({
+      pathname: `/manage`,
+      state: { item: {} },
+    });
+  }
 
   return (
     <StyledDiv>
@@ -102,6 +118,8 @@ export default function HomePage() {
           ))}
         </Grid>
       </div>
+      <Button onClick={handleCreate}>Create</Button>
+      <Button onClick={handleEdit}>Edit</Button>
     </StyledDiv>
   );
 }
