@@ -53,18 +53,19 @@ const itemHistory = [
 export default function ItemPage(props) {
   // This function makes an api call to bid on an item.
   const [item, setItem] = useState(null);
+  const [itemHistory, setItemHistory] = useState(null);
   function handleBid(item, bidValue) {
     console.log(`clicked on id: ${item.id}`);
     console.log(`bid: ${bidValue}`);
   }
 
-  console.log(props);
   useEffect(() => {
     const id = props.match.params.guid;
     console.log(id);
     axios.get(`${backendUrl}/item/${id}`).then(res => {
       console.log(res);
       setItem(res.data);
+      setItemHistory(res.data.history);
     });
   }, []);
 
@@ -78,7 +79,9 @@ export default function ItemPage(props) {
         />
       )}
       <br />
-      <BidHistory key={_.uniqueId()} currentItems={itemHistory} />
+      {itemHistory !== null && (
+        <BidHistory key={_.uniqueId()} currentItems={itemHistory} />
+      )}
     </StyledDiv>
   );
 }
