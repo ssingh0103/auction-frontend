@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import ItemDetails from '../../components/ItemDetails';
+import BidHistory from '../../components/BidHistory';
 
 const StyledDiv = styled.div`
   div[name='button'] {
@@ -16,10 +17,10 @@ const item = {
   description: 'Description',
   identifier: 'ch_1',
   startingBid: 10,
-  minIncrement: 1,
-  highestBidValue: 11,
-  highestBidEmail: 'jupatel@xactlycorp.com',
-  highestBidName: 'Jugal Patel',
+  incrementBid: 1,
+  highestBid: 11,
+  highestBidderEmail: 'jupatel@xactlycorp.com',
+  highestBidderName: 'Jugal Patel',
 };
 
 // Mocking the api call returning items list.
@@ -27,23 +28,23 @@ const itemHistory = [
   {
     id: 1,
     itemId: 1,
-    highestBidValue: 11,
-    highestBidEmail: 'jupatel@xactlycorp.com',
-    highestBidName: 'Jugal Patel',
+    highestBid: 11,
+    highestBidderEmail: 'jupatel@xactlycorp.com',
+    highestBidderName: 'Jugal Patel',
   },
   {
     id: 2,
     itemId: 1,
-    highestBidValue: 12,
-    highestBidEmail: 'ssingh@xactlycorp.com',
-    highestBidName: 'Sunil Singh',
+    highestBid: 12,
+    highestBidderEmail: 'ssingh@xactlycorp.com',
+    highestBidderName: 'Sunil Singh',
   },
   {
     id: 3,
     itemId: 1,
-    highestBidValue: 27,
-    highestBidEmail: 'jupatel@xactlycorp.com',
-    highestBidName: 'Jugal Patel',
+    highestBid: 27,
+    highestBidderEmail: 'jupatel@xactlycorp.com',
+    highestBidderName: 'Jugal Patel',
   },
 ];
 
@@ -59,6 +60,12 @@ export default function ItemPage() {
       <ItemDetails
         key={_.uniqueId()}
         currentItem={item}
+        bidHandler={handleBid}
+      />
+      <br />
+      <BidHistory
+        key={_.uniqueId()}
+        currentItem={itemHistory}
         bidHandler={handleBid}
       />
     </StyledDiv>
