@@ -9,6 +9,7 @@ import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
+import { Button } from '@material-ui/core';
 import ListItem from '../../components/ListItem';
 import SearchBar from '../../components/SearchBar';
 
@@ -61,7 +62,7 @@ const items = [
   },
 ];
 
-export default function HomePage() {
+export default function HomePage({ history }) {
   // This function makes an api call to bid on an item.
   function handleBid(item, bidValue) {
     console.log(`clicked on id: ${item.id}`);
@@ -72,6 +73,19 @@ export default function HomePage() {
     // TO DO: Filter listings using the category and value.
     console.log(`search category: ${category}`);
     console.log(`search for: ${searchValue}`);
+  }
+
+  function handleEdit() {
+    history.push({
+      pathname: `/manage/${1}`,
+      state: { item: items[0] },
+    });
+  }
+  function handleCreate() {
+    history.push({
+      pathname: `/manage`,
+      state: { item: {} },
+    });
   }
 
   return (
@@ -94,6 +108,8 @@ export default function HomePage() {
           ))}
         </Grid>
       </div>
+      <Button onClick={handleCreate}>Create</Button>
+      <Button onClick={handleEdit}>Edit</Button>
     </StyledDiv>
   );
 }

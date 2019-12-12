@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import SimpleReactValidator from 'simple-react-validator';
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -18,7 +18,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const StyledDiv = styled.div``;
+const StyledDiv = styled.div`
+  div[class='srv-validation-message'] {
+    color: #f76321;
+    display: inline;
+  }
+`;
 
 export default function SearchBar({ searchHandler }) {
   // Use bid value to track state of user
@@ -45,6 +50,26 @@ export default function SearchBar({ searchHandler }) {
     setCategory(event.target.value);
   };
 
+  // Validation
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
+  const [validator] = useState(
+    new SimpleReactValidator({ messages: { default: '*' } }),
+  );
+
+  // Show validation if does not meet criteria.
+  validator.showMessages();
+
+  // Fired to validate the input
+  const onSearchClick = () => {
+    if (validator.allValid()) {
+      searchHandler(searchValue, category);
+    } else {
+      validator.showMessages();
+      forceUpdate();
+    }
+  };
+
   return (
     <StyledDiv>
       <p>Search:</p>
@@ -69,12 +94,7 @@ export default function SearchBar({ searchHandler }) {
         </Select>
       </FormControl>
       <input value={searchValue} onChange={handleSearchValueChange} />
-      <Button
-        onClick={() => searchHandler(searchValue, category)}
-        color="primary"
-      >
-        Search
-      </Button>
+      <Button onClick={onSearchClick}>Search</Button>
     </StyledDiv>
   );
 }
