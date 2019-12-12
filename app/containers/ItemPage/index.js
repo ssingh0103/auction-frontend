@@ -7,23 +7,12 @@ import BidHistory from '../../components/BidHistory';
 import { backendUrl } from '../../constants';
 
 const StyledDiv = styled.div`
+  margin: 10px;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   div[name='button'] {
     margin-top: 20px;
   }
 `;
-
-// // Mocking the api call returning items list.
-// const item = {
-//   id: 1,
-//   title: 'Chair 1',
-//   description: 'Description',
-//   identifier: 'ch_1',
-//   startingBid: 10,
-//   incrementBid: 1,
-//   highestBid: 11,
-//   highestBidderEmail: 'jupatel@xactlycorp.com',
-//   highestBidderName: 'Jugal Patel',
-// };
 
 // Mocking the api call returning items list.
 const itemHistory = [
@@ -51,19 +40,32 @@ const itemHistory = [
 ];
 
 export default function ItemPage(props) {
+  const { user } = props;
   // This function makes an api call to bid on an item.
   const [item, setItem] = useState(null);
   const [itemHistory, setItemHistory] = useState(null);
+
   function handleBid(item, bidValue) {
-    console.log(`clicked on id: ${item.id}`);
-    console.log(`bid: ${bidValue}`);
+    const updatedItem = {
+      ...item,
+      highestBid: parseInt(bidValue),
+      highestBidderEmail: user.email,
+      highestBidderName: `${user.name} ${user.surname}`,
+    };
+    axios
+      .put(`${backendUrl}/item/highbid/${item._id}`, updatedItem)
+      .then(res => {
+        const id = props.match.params.guid;
+        axios.get(`${backendUrl}/item/${id}`).then(res => {
+          setItem(res.data);
+          setItemHistory(res.data.history);
+        });
+      });
   }
 
   useEffect(() => {
     const id = props.match.params.guid;
-    console.log(id);
     axios.get(`${backendUrl}/item/${id}`).then(res => {
-      console.log(res);
       setItem(res.data);
       const his = [...res.data.history];
       his.sort(function(a, b) {
@@ -87,7 +89,6 @@ export default function ItemPage(props) {
           bidHandler={handleBid}
         />
       )}
-      <br />
       {itemHistory !== null && (
         <BidHistory key={_.uniqueId()} currentItems={itemHistory} />
       )}

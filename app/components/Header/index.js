@@ -27,19 +27,21 @@ export default function ButtonAppBar({ loggedIn, authenticated, isAdmin }) {
   const handleAdminClick = () => {
     history.push('/admin');
   };
+
+  const handleHomeClick = () => {
+    history.push('/');
+  };
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
+          <Typography
+            variant="h6"
+            className={classes.title}
+            onClick={handleHomeClick}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title} />
+            Office Auction
+          </Typography>
           {!authenticated && (
             <GoogleLogin
               clientId="59367628704-8i9re8sgggkpn7rkbfrtvgbou43g69b2.apps.googleusercontent.com"

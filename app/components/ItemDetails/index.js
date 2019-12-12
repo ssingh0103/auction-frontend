@@ -1,77 +1,30 @@
-/*
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Button } from '@material-ui/core';
-
-const StyledDiv = styled.div`
-  background-color: green;
-`;
-
-export default function ListItem({ currentItem, bidHandler }) {
-  // Get properties of the current item to display
-  const {
-    title,
-    description,
-    highestBidValue,
-    highestBidName,
-    minIncrement,
-  } = currentItem;
-
-  // Use bid value to track state of user
-  const [bidValue, setBidValue] = useState(highestBidValue + minIncrement);
-
-  // Handler for updating bid value
-  const handleBidChange = value => {
-    setBidValue(value.target.value);
-  };
-
-  return (
-    <StyledDiv>
-      <div>
-        <h3>Image</h3>
-        <br />
-        <p>Title: {title}</p>
-        <p>Description: {description}</p>
-        <p>Current bid: {highestBidValue}</p>
-        <p>Highest bidder: {highestBidName}</p>
-        <p>Minimum increment: {minIncrement}</p>
-      </div>
-      <input value={bidValue} onChange={handleBidChange} />
-      <Button onClick={() => bidHandler(currentItem, bidValue)} color="primary">
-        Bid
-      </Button>
-    </StyledDiv>
-  );
-}
-*/
-
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import SimpleReactValidator from 'simple-react-validator';
 
 const StyledDiv = styled.div`
-  display: flex;
-  background-color: #ffffff;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.22);
+display: flex;
+background-color: #ffffff;
 
-  div.info {
-    margin: 20px 5px 20px 5px;
-  }
+div.info {
+  margin: 20px 5px 20px 5px;
+}
 
-  div.itemTitle {
-    color: #346f8f;
-  }
+div.info > div {
+  padding-top 6px;
+  font-size: 12px;
+}
 
-  div[class='srv-validation-message'] {
-    color: #f76321;
-    display: inline;
-  }
+div[class='srv-validation-message'] {
+  color: #f76321;
+  display: inline;
+}
 
-  input[name='bidValue'] {
-    margin-left: 5px;
-    width: 100px;
-  }
+input[name='bidValue'] {
+  margin-left: 5px;
+  width: 100px;
+}
 `;
 
 const ImageDiv = styled.div`
@@ -79,6 +32,7 @@ const ImageDiv = styled.div`
   width: 200px;
   margin: 10px;
   border: 1px solid #ececed;
+  text-align: center;
 `;
 
 export default function ItemDetails({ currentItem, bidHandler }) {
@@ -91,10 +45,10 @@ export default function ItemDetails({ currentItem, bidHandler }) {
     highestBidderEmail,
     incrementBid,
   } = currentItem;
-  const maxBidValue = highestBid || startingBid;
+  const maxBidValue = highestBid ? highestBid + incrementBid : startingBid;
 
   // Use bid value to track state of user
-  const [bidValue, setBidValue] = useState(maxBidValue + incrementBid);
+  const [bidValue, setBidValue] = useState(maxBidValue);
 
   // Handler for updating bid value
   const handleBidChange = value => {
@@ -107,9 +61,6 @@ export default function ItemDetails({ currentItem, bidHandler }) {
   const [validator] = useState(
     new SimpleReactValidator({ messages: { default: '*' } }),
   );
-
-  // Show validation if does not meet criteria.
-  validator.showMessages();
 
   // Fired to validate the input
   const onBidClick = () => {
@@ -125,27 +76,40 @@ export default function ItemDetails({ currentItem, bidHandler }) {
     <StyledDiv>
       <ImageDiv>Image</ImageDiv>
       <div className="info">
-        <div className="itemTitle">Title: {title}</div>
-        <div>Current bid: {maxBidValue}</div>
-        <div>Description: {description}</div>
-        <div>Highest bidder: {highestBidderEmail || 'No bids yeet'}</div>
+        <div className="itemTitle">
+          Title: <strong>{title}</strong>
+        </div>
+        <div>
+          {highestBid
+            ? `Current Bid:${highestBid}`
+            : `Minimum Bid:${startingBid}`}
+        </div>
+        <div>
+          {highestBid
+            ? `Highest bidder: ${highestBidderEmail}`
+            : 'No bids yet.'}
+        </div>
         <div>Minimum increment: {incrementBid}</div>
 
         <div className="section">
-          <label htmlFor="bidValue" name="title">
-            Bid Value
-            <span>
-              {validator.message(
+          <TextField
+            id="bidValue"
+            label="Bid Value"
+            error={
+              validator.message(
                 'Bid Value',
                 bidValue,
-                `required|currency|min:${maxBidValue + incrementBid},num`,
-              )}
-            </span>
-          </label>
-          <input
-            type="bidValue"
-            name="bidValue"
-            id="bidValue"
+                `required|currency|min:${maxBidValue},num`,
+              ) != null
+            }
+            helperText={
+              'Bid value is required' &&
+              validator.message(
+                'Bid Value',
+                bidValue,
+                `required|currency|min:${maxBidValue},num`,
+              )
+            }
             value={bidValue}
             onChange={handleBidChange}
           />
