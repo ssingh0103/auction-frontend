@@ -18,6 +18,14 @@ const StyledDiv = styled.div`
     color: #f76321;
     display: inline;
   }
+
+  div.inputText {
+    width: 400px;
+  }
+
+  div.buttonStyle {
+    padding-left: 16px;
+  }
 `;
 
 const useStyles = makeStyles(theme => ({
@@ -79,8 +87,12 @@ export default function AddEditItem({
   return (
     <StyledDiv>
       <div className={classes.root}>
+        <div>
+          {currentItem == null ? <h3>Add New Item</h3> : <h3>Update Item</h3>}
+        </div>
         <div className="input">
           <TextField
+            className="inputText"
             id="title"
             label="Title"
             error={validator.message('Title', item.title, 'required') != null}
@@ -95,6 +107,7 @@ export default function AddEditItem({
         </div>
         <div className="input">
           <TextField
+            className="inputText"
             id="description"
             label="Description"
             value={item.description}
@@ -106,6 +119,7 @@ export default function AddEditItem({
         </div>
         <div className="input">
           <TextField
+            className="inputText"
             id="identifier"
             label="Identifier"
             error={
@@ -126,6 +140,7 @@ export default function AddEditItem({
         </div>
         <div className="input">
           <TextField
+            className="inputText"
             id="startingBid"
             label="Starting Bid"
             error={
@@ -150,6 +165,7 @@ export default function AddEditItem({
         </div>
         <div className="input">
           <TextField
+            className="inputText"
             id="incrementBid"
             label="Minimum Increment"
             error={
@@ -173,7 +189,7 @@ export default function AddEditItem({
           />
         </div>
       </div>
-      <div>
+      <div className="buttonStyle">
         {currentItem == null && (
           <Button onClick={onSaveClick} variant="contained" color="primary">
             Save
