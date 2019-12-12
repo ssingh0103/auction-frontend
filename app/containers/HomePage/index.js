@@ -5,12 +5,14 @@
  *
  */
 
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
 import ListItem from '../../components/ListItem';
 import SearchBar from '../../components/SearchBar';
+import axios from 'axios';
+import url from '../../constants'
 
 const StyledDiv = styled.div`
   padding: 20px;
@@ -73,6 +75,12 @@ export default function HomePage() {
     console.log(`search category: ${category}`);
     console.log(`search for: ${searchValue}`);
   }
+
+  useEffect(()=>{
+    axios.get(url+'/item').then(res=>{
+      console.log(res);
+    })
+  })
 
   return (
     <StyledDiv>
