@@ -19,10 +19,21 @@ import GlobalStyle from '../../global-styles';
 
 export default function App() {
   const [timer, setTimer] = useState(0);
+  const [user,setUser] = useState(null);
 
+
+  const loggedIn = (profile)=>{
+    let newUser ={
+      email: profile.profileObj.email,
+      name:  profile.profileObj.givenName,
+      surname: profile.profileObj.familyName
+    }
+    setUser(newUser);
+  }
+  console.log('User is',user);
   return (
     <div>
-      <Header />
+      <Header loggedIn={loggedIn} authenticated={user!==null}/>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/details" component={ItemPage} />
