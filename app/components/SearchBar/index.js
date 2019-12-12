@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -93,8 +93,17 @@ export default function SearchBar({ searchHandler }) {
           <MenuItem value="highestBidEmail">Highest Bidder</MenuItem>
         </Select>
       </FormControl>
-      <input value={searchValue} onChange={handleSearchValueChange} />
-      <Button onClick={onSearchClick}>Search</Button>
+      <div className="section">
+        <TextField
+          id="searchValue"
+          label="Search"
+          value={searchValue}
+          onChange={handleSearchValueChange}
+        />
+      </div>
+      <Button onClick={onSearchClick} variant="contained" color="primary">
+        Search
+      </Button>
     </StyledDiv>
   );
 }
