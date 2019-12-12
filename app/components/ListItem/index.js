@@ -12,8 +12,9 @@ const StyledDiv = styled.div`
     margin: 20px 5px 20px 5px;
   }
 
-  div.itemTitle {
-    color: #346f8f;
+  div.info > div {
+    padding-top 6px;
+    font-size: 12px;
   }
 
   div[class='srv-validation-message'] {
@@ -32,9 +33,10 @@ const ImageDiv = styled.div`
   width: 200px;
   margin: 10px;
   border: 1px solid #ececed;
+  text-align: center;
 `;
 
-export default function ListItem({ currentItem, bidHandler }) {
+export default function ListItem({ currentItem, bidHandler, isLoggedIn }) {
   // Get properties of the current item to display
   const {
     title,
@@ -77,7 +79,9 @@ export default function ListItem({ currentItem, bidHandler }) {
     <StyledDiv>
       <ImageDiv>Image</ImageDiv>
       <div className="info">
-        <div className="itemTitle">Title: {title}</div>
+        <div className="itemTitle">
+          Title: <strong>{title}</strong>
+        </div>
         <div>
           {highestBid
             ? `Current Bid:${highestBid}`
@@ -113,9 +117,13 @@ export default function ListItem({ currentItem, bidHandler }) {
             onChange={handleBidChange}
           />
         </div>
-
         <div>
-          <Button onClick={onBidClick} variant="contained" color="primary">
+          <Button
+            disabled={!isLoggedIn}
+            onClick={onBidClick}
+            variant="contained"
+            color="primary"
+          >
             Bid
           </Button>
         </div>

@@ -35,7 +35,8 @@ export default function App() {
     }
   };
 
-  console.log(isAdmin);
+  console.log(user);
+
   return (
     <div>
       <Header
@@ -44,7 +45,11 @@ export default function App() {
         isAdmin={isAdmin}
       />
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route
+          exact
+          path="/"
+          render={props => <HomePage {...props} user={user} />}
+        />
         <Route exact path="/details" component={ItemPage} />
         <Route exact path="/admin" component={AdminPage} />
         <Route component={NotFoundPage} />
