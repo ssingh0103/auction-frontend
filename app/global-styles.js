@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
   }
 
   body.fontLoaded {
@@ -16,14 +16,15 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #app {
-    background-color: #fafafa;
+    background-color: #F7F7F7;
     min-height: 100%;
     min-width: 100%;
   }
 
   p,
-  label {
-    font-family: Georgia, Times, 'Times New Roman', serif;
+  label,
+  h1 {
+    font-family: 'Poppins', sans-serif;
     line-height: 1.5em;
   }
 `;

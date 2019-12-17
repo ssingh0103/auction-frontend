@@ -1,25 +1,53 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
-import { Button, TextField } from '@material-ui/core';
+import {
+  Button,
+  TextField,
+  InputLabel,
+  Input,
+  InputAdornment,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import SimpleReactValidator from 'simple-react-validator';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import FormControl from '@material-ui/core/FormControl';
+import Paper from '@material-ui/core/Paper';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+
+const useStyles = makeStyles({
+  card: {
+    minWidth: '100%',
+  },
+  media: {
+    height: 200,
+  },
+  identifier: {
+    fontSize: 12,
+  },
+  formControl: {
+    width: '70%',
+    padding: 5,
+  },
+  placeBid: {
+    width: '30%',
+  },
+});
 
 const StyledDiv = styled.div`
   display: flex;
-  background-color: #ffffff;
-  border: 0.5px;
-  border-style: solid;
 
   &:hover {
-    box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-}
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2),
+      0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
 
   div.info {
     margin: 20px 5px 20px 5px;
-  }
-
-  div.info > div {
-    padding-top 6px;
-    font-size: 12px;
   }
 
   div[class='srv-validation-message'] {
@@ -31,15 +59,23 @@ const StyledDiv = styled.div`
     margin-left: 5px;
     width: 100px;
   }
+
+  div.title {
+    font-size: 16px;
+  }
+
+  pre.description {
+    font-family: 'Poppins', sans-serif;
+  }
 `;
 
-const ImageDiv = styled.div`
-  height: 200px;
-  width: 200px;
-  margin: 10px;
-  border: 1px solid #ececed;
-  text-align: center;
-`;
+function truncateString(str, length) {
+  if (str.length > length) {
+    return str.substring(0, length - 3) + '...';
+  } else {
+    return str;
+  }
+}
 
 export default function ListItem({
   currentItem,
@@ -53,7 +89,9 @@ export default function ListItem({
     startingBid,
     highestBid,
     highestBidderEmail,
+    description,
     incrementBid,
+    identifier,
   } = currentItem;
   const maxBidValue = highestBid ? highestBid + incrementBid : startingBid;
 
@@ -89,59 +127,78 @@ export default function ListItem({
     ? () => detailsClickHandler(currentItem)
     : () => {};
 
+  // Sytling for Card
+  const classes = useStyles();
+
   return (
     <StyledDiv onClick={clickHandler}>
-      <ImageDiv>Image</ImageDiv>
-      <div className="info">
-        <div className="itemTitle">
-          Title: <strong>{title}</strong>
-        </div>
-        <div>
-          {highestBid
-            ? `Current Bid:${highestBid}`
-            : `Minimum Bid:${startingBid}`}
-        </div>
-        <div>
-          {highestBid
-            ? `Highest bidder: ${highestBidderEmail}`
-            : 'No bids yet.'}
-        </div>
-        <div>Minimum increment: {incrementBid}</div>
-
-        <div className="section">
-          <TextField
-            id="bidValue"
-            label="Bid Value"
-            error={
-              validator.message(
-                'Bid Value',
-                bidValue,
-                `required|currency|min:${maxBidValue},num`,
-              ) != null
-            }
-            helperText={
-              'Bid value is required' &&
-              validator.message(
-                'Bid Value',
-                bidValue,
-                `required|currency|min:${maxBidValue},num`,
-              )
-            }
-            value={bidValue}
-            onChange={handleBidChange}
+      <Card className={classes.card}>
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image="/static/images/cards/contemplative-reptile.jpg"
+            title="Contemplative Reptile"
           />
-        </div>
-        <div>
-          <Button
-            disabled={!isLoggedIn}
-            onClick={onBidClick}
-            variant="contained"
-            color="primary"
-          >
-            Bid
-          </Button>
-        </div>
-      </div>
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              {title}
+            </Typography>
+            <Typography className={classes.identifier} color="textSecondary">
+              <em>{identifier}</em>
+            </Typography>
+            <Typography variant="body2" gutterBottom component="p">
+              <pre className="description">
+                {truncateString(description, 75)}
+              </pre>
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {highestBid
+                ? `Current Bid: $${highestBid}`
+                : `Minimum Bid: $${startingBid}`}
+              &nbsp;({highestBid ? `${highestBidderEmail}` : 'No bids yet'})
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+            <FormControl
+              variant="outlined"
+              className={classes.formControl}
+            >
+              <InputLabel htmlFor="searchValue">
+                {'Bid value is required' &&
+                  validator.message(
+                    'Bid Value',
+                    bidValue,
+                    `required|currency|min:${maxBidValue},num`,
+                  )}
+              </InputLabel>
+              <Input
+                id="bidValue"
+                value={bidValue}
+                onChange={handleBidChange}
+                error={
+                  validator.message(
+                    'Bid Value',
+                    bidValue,
+                    `required|currency|min:${maxBidValue},num`,
+                  ) != null
+                }
+                startAdornment={
+                  <InputAdornment position="start">$</InputAdornment>
+                }
+              />
+            </FormControl>
+            <Button
+              className={classes.placeBid}
+              disabled={!isLoggedIn}
+              onClick={onBidClick}
+              variant="contained"
+              color="primary"
+            >
+              Place Bid
+            </Button>
+        </CardActions>
+      </Card>
     </StyledDiv>
   );
 }

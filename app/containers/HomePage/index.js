@@ -25,10 +25,6 @@ const StyledDiv = styled.div`
   div.listing {
     margin: 10px;
   }
-
-  h2 {
-    margin-left: 20px;
-  }
 `;
 
 export default function HomePage({ user, history }) {
@@ -71,11 +67,36 @@ export default function HomePage({ user, history }) {
   }
 
   function handleSearch(searchValue, category) {
-    const tempItems = items.filter(
-      item =>
-        item[category] != null &&
-        item[category].toLowerCase().includes(searchValue.toLowerCase()),
-    );
+    const categories = [
+      'title',
+      'description',
+      'identifier',
+      'highestBidderEmail',
+    ];
+
+    var tempItems = [];
+    if (category != 'all') {
+      tempItems = items.filter(
+        item =>
+          item[category] != null &&
+          item[category].toLowerCase().includes(searchValue.toLowerCase()),
+      );
+    } else {
+      // Loop through all the items on the page
+      tempItems = items.filter(item => {
+        // If the item contains the search criteria, then add to the filtered items.
+        var hasString = false;
+        // Loop through all the properties that we allow the user to search by and check to see if it contains the search query.
+        categories.forEach(element => {
+          // If it contains the string, set boolean to true.
+          if (item[element].toLowerCase().includes(searchValue.toLowerCase())) {
+            hasString = true;
+          }
+        });
+        return hasString;
+      });
+    }
+
     setFilteredItems(tempItems);
     setIsFiltered(true);
   }

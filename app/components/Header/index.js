@@ -18,6 +18,10 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    fontFamily: "inherit",
+  },
+  toolBar: {
+    background: 'linear-gradient(45deg, #FF8E53 30%, #F76321 90%)',
   },
 }));
 
@@ -34,13 +38,13 @@ export default function ButtonAppBar({ loggedIn, authenticated, isAdmin }) {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar className={classes.toolBar}>
           <Typography
             variant="h6"
             className={classes.title}
             onClick={handleHomeClick}
           >
-            Office Auction
+            Xactly Office Auction
           </Typography>
           {!authenticated && (
             <GoogleLogin
