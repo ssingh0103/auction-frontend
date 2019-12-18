@@ -26,6 +26,9 @@ const StyledDiv = styled.div`
 `;
 
 export default function BidHistory({ currentItems }) {
+
+
+
   return (
     <StyledDiv>
       <table border="1">

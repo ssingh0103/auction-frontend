@@ -3,41 +3,13 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import axios from 'axios';
 import ItemDetails from '../../components/ItemDetails';
-import BidHistory from '../../components/BidHistory';
+import Grid from '@material-ui/core/Grid';
 import { backendUrl } from '../../constants';
+import HistoryTable from '../../components/HistoryTable';
 
 const StyledDiv = styled.div`
   margin: 10px;
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  div[name='button'] {
-    margin-top: 20px;
-  }
 `;
-
-// Mocking the api call returning items list.
-const itemHistory = [
-  {
-    id: 1,
-    itemId: 1,
-    highestBid: 11,
-    highestBidderEmail: 'jupatel@xactlycorp.com',
-    highestBidderName: 'Jugal Patel',
-  },
-  {
-    id: 2,
-    itemId: 1,
-    highestBid: 12,
-    highestBidderEmail: 'ssingh@xactlycorp.com',
-    highestBidderName: 'Sunil Singh',
-  },
-  {
-    id: 3,
-    itemId: 1,
-    highestBid: 27,
-    highestBidderEmail: 'jupatel@xactlycorp.com',
-    highestBidderName: 'Jugal Patel',
-  },
-];
 
 export default function ItemPage(props) {
   const { user } = props;
@@ -91,16 +63,39 @@ export default function ItemPage(props) {
 
   return (
     <StyledDiv>
-      {item !== null && (
-        <ItemDetails
-          key={_.uniqueId()}
-          currentItem={item}
-          bidHandler={handleBid}
-        />
-      )}
-      {itemHistory !== null && (
-        <BidHistory key={_.uniqueId()} currentItems={itemHistory} />
-      )}
+      <Grid container spacing={3}>
+        {item !== null && (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={8}
+            xl={8}
+            key={_.uniqueId('item')}
+          >
+            <ItemDetails
+              key={_.uniqueId()}
+              currentItem={item}
+              bidHandler={handleBid}
+              isLoggedIn={user != null}
+            />
+          </Grid>
+        )}
+        {itemHistory !== null && (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={4}
+            xl={4}
+            key={_.uniqueId('hist')}
+          >
+            <HistoryTable key={_.uniqueId()} currentItems={itemHistory} />
+          </Grid>
+        )}
+      </Grid>
     </StyledDiv>
   );
 }

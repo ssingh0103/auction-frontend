@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   media: {
     height: 400,
     backgroundColor: '#E5E5E5',
-    margin: 12
+    margin: 12,
   },
   identifier: {
     fontSize: 12,
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
     width: '30%',
   },
   description: {
-    height: 60
+    height: 60,
   },
 });
 
@@ -76,10 +76,9 @@ const StyledDiv = styled.div`
 
 function truncateString(str, length) {
   if (str.length > length) {
-    return str.substring(0, length - 3) + ' ...';
-  } else {
-    return str;
+    return `${str.substring(0, length - 3)} ...`;
   }
+  return str;
 }
 
 export default function ListItem({
@@ -151,7 +150,12 @@ export default function ListItem({
             <Typography className={classes.identifier} color="textSecondary">
               <em>{identifier}</em>
             </Typography>
-            <Typography className={classes.description} variant="body2" gutterBottom component="p">
+            <Typography
+              className={classes.description}
+              variant="body2"
+              gutterBottom
+              component="p"
+            >
               <pre className="description">
                 {truncateString(description, 75)}
               </pre>
@@ -165,43 +169,40 @@ export default function ListItem({
           </CardContent>
         </CardActionArea>
         <CardActions>
-            <FormControl
-              variant="outlined"
-              className={classes.formControl}
-            >
-              <InputLabel htmlFor="searchValue">
-                {'Bid value is required' &&
-                  validator.message(
-                    'Bid Value',
-                    bidValue,
-                    `required|currency|min:${maxBidValue},num`,
-                  )}
-              </InputLabel>
-              <Input
-                id="bidValue"
-                value={bidValue}
-                onChange={handleBidChange}
-                error={
-                  validator.message(
-                    'Bid Value',
-                    bidValue,
-                    `required|currency|min:${maxBidValue},num`,
-                  ) != null
-                }
-                startAdornment={
-                  <InputAdornment position="start">$</InputAdornment>
-                }
-              />
-            </FormControl>
-            <Button
-              className={classes.placeBid}
-              disabled={!isLoggedIn}
-              onClick={onBidClick}
-              variant="contained"
-              color="primary"
-            >
-              Place Bid
-            </Button>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel htmlFor="searchValue">
+              {'Bid value is required' &&
+                validator.message(
+                  'Bid Value',
+                  bidValue,
+                  `required|currency|min:${maxBidValue},num`,
+                )}
+            </InputLabel>
+            <Input
+              id="bidValue"
+              value={bidValue}
+              onChange={handleBidChange}
+              error={
+                validator.message(
+                  'Bid Value',
+                  bidValue,
+                  `required|currency|min:${maxBidValue},num`,
+                ) != null
+              }
+              startAdornment={
+                <InputAdornment position="start">$</InputAdornment>
+              }
+            />
+          </FormControl>
+          <Button
+            className={classes.placeBid}
+            disabled={!isLoggedIn}
+            onClick={onBidClick}
+            variant="contained"
+            color="primary"
+          >
+            Place Bid
+          </Button>
         </CardActions>
       </Card>
     </StyledDiv>
