@@ -122,6 +122,8 @@ export function AdminPage() {
         });
     });
   };
+
+  
   return (
     <div>
       <Tabs
@@ -131,7 +133,6 @@ export function AdminPage() {
       >
         <Tab label="List" />
         <Tab label="Add/Edit Item" />
-        <Tab label="Item Three" />
       </Tabs>
       {value == 0 && (
         <AdminList

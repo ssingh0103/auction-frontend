@@ -11,7 +11,9 @@ import _ from 'lodash';
 import SimpleReactValidator from 'simple-react-validator';
 import { Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
+import {backendUrl} from '../../constants';
+import axios from 'axios'
+import PicList from './PicList';
 const StyledDiv = styled.div`
   padding: 20px;
   div[class='srv-validation-message'] {
@@ -49,7 +51,10 @@ export default function AddEditItem({
     identifier: '',
     startingBid: 1,
     incrementBid: 1,
+    images:[]
   });
+
+  const [images,setImages]= useState([]);
 
   useEffect(() => {
     if (currentItem != null) {
@@ -74,6 +79,7 @@ export default function AddEditItem({
     if (validator.allValid()) {
       // TODO: Make axios request to save item.
       const creating = Boolean(currentItem == null);
+  
       creating ? handleSave(item) : handleUpdate(item);
     } else {
       validator.showMessages();
@@ -81,6 +87,50 @@ export default function AddEditItem({
     }
   };
 
+
+  const handlePic = (e)=>{
+    console.log(e.target.files[0]);
+    const formData = new FormData();
+    setItem({
+      ...item,images:[...item.images,e.target.files[0].name]
+    })
+    formData.append('myFile',e.target.files[0]);
+    const config = {
+      headers: {
+          'content-type': 'multipart/form-data'
+      }
+  };
+  axios
+        .post(`${backendUrl}/item/image`,formData,config).then(res=>{
+          console.log(res)
+         
+        })
+  // console.log(e.target.files[0].name);
+   
+    // setImages([...images,e.target.files[0]]);
+  }
+
+  console.log(item);
+  const handleDeletePic = (name)=>{
+    let newImages = [...item.images];
+    newImages.splice(name,1);
+    setItem({
+      ...item,images:newImages
+    })
+  }
+
+  console.log(item);
+  const list   = item.images.map((it,i)=>{
+    return (
+        <div key={i}>{it}
+        <span onClick={()=>handleDeletePic(it.name)}>  Delete</span>
+        </div>
+    )
+})
+
+  
+
+  
   // Styles
   const classes = useStyles();
 
@@ -90,6 +140,19 @@ export default function AddEditItem({
         <div>
           {currentItem == null ? <h3>Add New Item</h3> : <h3>Update Item</h3>}
         </div>
+        <Button
+          variant="contained"
+          component="label"
+        >
+        Upload Image
+          <input
+            type="file"
+            style={{ display: "none" }}
+            onChange={handlePic}
+          />
+</Button>
+{/* {images.length>0 && <img src={URL.createObjectURL(images[0])}/>} */}
+{item.images.length>0 && list}
         <div className="input">
           <TextField
             className="inputText"

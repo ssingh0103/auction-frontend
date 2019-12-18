@@ -37,6 +37,8 @@ export default function HomePage({ user, history }) {
     axios
       .get(`${backendUrl}/item`)
       .then(response => {
+        console.log(response.data);
+
         setItems(response.data);
       })
       .catch(error => {
