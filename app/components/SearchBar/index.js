@@ -7,7 +7,7 @@ import {
   InputAdornment,
   RadioGroup,
   FormControlLabel,
-  Radio
+  Radio,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -21,7 +21,7 @@ import Search from '@material-ui/icons/Search';
 const useStyles = makeStyles(theme => ({
   search: {
     marginTop: theme.spacing(1),
-    width: '60%'
+    width: '60%',
   },
   category: {
     marginTop: theme.spacing(1),
@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const StyledDiv = styled.div`
+  margin-left: 10px;
   div[class='srv-validation-message'] {
     color: #f76321;
     display: inline;
@@ -143,18 +144,10 @@ export default function SearchBar({ searchHandler, clearHandler }) {
         </FormHelperText>
       </FormControl>
       <ButtonGroup>
-        <Button
-          onClick={onSearchClick}
-          variant="outlined"
-          color="primary"
-        >
+        <Button onClick={onSearchClick} variant="outlined" color="primary">
           Search
         </Button>
-        <Button
-          onClick={clearHandler}
-          variant="outlined"
-          color="secondary"
-        >
+        <Button onClick={clearHandler} variant="outlined" color="secondary">
           Clear
         </Button>
       </ButtonGroup>
