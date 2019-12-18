@@ -89,7 +89,7 @@ export default function HomePage({ user, history }) {
         // Loop through all the properties that we allow the user to search by and check to see if it contains the search query.
         categories.forEach(element => {
           // If it contains the string, set boolean to true.
-          if (item[element].toLowerCase().includes(searchValue.toLowerCase())) {
+          if (item[element] && item[element].toLowerCase().includes(searchValue.toLowerCase())) {
             hasString = true;
           }
         });

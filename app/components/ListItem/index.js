@@ -24,7 +24,9 @@ const useStyles = makeStyles({
     minWidth: '100%',
   },
   media: {
-    height: 200,
+    height: 400,
+    backgroundColor: '#E5E5E5',
+    margin: 12
   },
   identifier: {
     fontSize: 12,
@@ -35,6 +37,9 @@ const useStyles = makeStyles({
   },
   placeBid: {
     width: '30%',
+  },
+  description: {
+    height: 60
   },
 });
 
@@ -71,7 +76,7 @@ const StyledDiv = styled.div`
 
 function truncateString(str, length) {
   if (str.length > length) {
-    return str.substring(0, length - 3) + '...';
+    return str.substring(0, length - 3) + ' ...';
   } else {
     return str;
   }
@@ -131,22 +136,22 @@ export default function ListItem({
   const classes = useStyles();
 
   return (
-    <StyledDiv onClick={clickHandler}>
+    <StyledDiv>
       <Card className={classes.card}>
-        <CardActionArea>
+        <CardActionArea onClick={clickHandler}>
           <CardMedia
             className={classes.media}
             image="/static/images/cards/contemplative-reptile.jpg"
             title="Contemplative Reptile"
           />
-          <CardContent>
+          <CardContent className={classes.content}>
             <Typography variant="h5" component="h2">
               {title}
             </Typography>
             <Typography className={classes.identifier} color="textSecondary">
               <em>{identifier}</em>
             </Typography>
-            <Typography variant="body2" gutterBottom component="p">
+            <Typography className={classes.description} variant="body2" gutterBottom component="p">
               <pre className="description">
                 {truncateString(description, 75)}
               </pre>
