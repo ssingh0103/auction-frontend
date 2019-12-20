@@ -5,7 +5,7 @@
  *
  */
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect,Fragment } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import SimpleReactValidator from 'simple-react-validator';
@@ -13,7 +13,8 @@ import { Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {backendUrl} from '../../constants';
 import axios from 'axios'
-import PicList from './PicList';
+import HistoryList from './HistoryList';
+import Grid from '@material-ui/core/Grid';
 const StyledDiv = styled.div`
   padding: 20px;
   div[class='srv-validation-message'] {
@@ -30,6 +31,10 @@ const StyledDiv = styled.div`
   }
 `;
 
+const RightDiv = styled.div`
+
+
+`
 const useStyles = makeStyles(theme => ({
   root: {
     '& > *': {
@@ -44,6 +49,7 @@ export default function AddEditItem({
   currentItem,
   handleSave,
   handleUpdate,
+  handleHistoryDelete,
 }) {
   const [item, setItem] = useState({
     title: '',
@@ -53,7 +59,6 @@ export default function AddEditItem({
     incrementBid: 1,
     images:[]
   });
-
   const [images,setImages]= useState([]);
 
   useEffect(() => {
@@ -89,7 +94,6 @@ export default function AddEditItem({
 
 
   const handlePic = (e)=>{
-    console.log(e.target.files[0]);
     const formData = new FormData();
     setItem({
       ...item,images:[...item.images,e.target.files[0].name]
@@ -110,7 +114,6 @@ export default function AddEditItem({
     // setImages([...images,e.target.files[0]]);
   }
 
-  console.log(item);
   const handleDeletePic = (name)=>{
     let newImages = [...item.images];
     newImages.splice(name,1);
@@ -119,7 +122,6 @@ export default function AddEditItem({
     })
   }
 
-  console.log(item);
   const list   = item.images.map((it,i)=>{
     return (
         <div key={i}>{it}
@@ -135,6 +137,11 @@ export default function AddEditItem({
   const classes = useStyles();
 
   return (
+    <Fragment>
+            <Grid container spacing={3}>
+
+     
+      <Grid item xs={12} md={6}>
     <StyledDiv>
       <div className={classes.root}>
         <div>
@@ -265,5 +272,15 @@ export default function AddEditItem({
         )}
       </div>
     </StyledDiv>
+    </Grid>
+    <Grid item xs={12} md={6}>
+    <RightDiv>
+      
+{currentItem!=null &&       <HistoryList historList ={currentItem.history}  handleHistoryDelete={handleHistoryDelete}/>}
+    </RightDiv>
+    </Grid>
+    </Grid>
+
+    </Fragment>
   );
 }

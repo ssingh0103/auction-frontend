@@ -19,10 +19,14 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import {backendUrl} from '../../constants'
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
 const useStyles = makeStyles({
   card: {
     minWidth: '100%',
   },
+  
   media: {
     height: 400,
     backgroundColor: '#E5E5E5',
@@ -58,6 +62,9 @@ div.info > div {
 div[class='srv-validation-message'] {
   color: #f76321;
   display: inline;
+}
+.carousel.carousel-slider{
+  margin-left: 200px !important
 }
 
 input[name='bidValue'] {
@@ -97,7 +104,7 @@ export default function ItemDetails({ currentItem, bidHandler, isLoggedIn }) {
   const [validator] = useState(
     new SimpleReactValidator({ messages: { default: '' } }),
   );
-
+    console.log(currentItem)
   // Show validation if does not meet criteria.
   validator.showMessages();
 
@@ -115,15 +122,21 @@ export default function ItemDetails({ currentItem, bidHandler, isLoggedIn }) {
   const classes = useStyles();
   let imgS = backendUrl+'/'+currentItem.images[0];
 
+  const imageList = currentItem.images.map((item,i)=>{
+    return <img key={i} src={backendUrl+'/'+item} />
+  })
   return (
     <StyledDiv>
       <Card className={classes.card}>
         <CardActionArea>
-          <CardMedia
+          {/* <CardMedia
             className={classes.media}
             image={imgS}
             title="Contemplative Reptile"
-          />
+          /> */}
+            <Carousel autoPlay width={'600px'} centerMode infiniteLoop>
+              {imageList}
+          </Carousel>
           <CardContent className={classes.content}>
             <Typography variant="h5" component="h2">
               {title}

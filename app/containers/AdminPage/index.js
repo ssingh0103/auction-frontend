@@ -123,6 +123,17 @@ export function AdminPage() {
     });
   };
 
+  const handleHistoryDelete = (id)=>{
+    console.log(id);
+    let newC = {...currentItem};
+    let newH = newC.history.filter(item=>item._id!=id);
+    delete newC.history;
+    newC['history']=newH
+    console.log(currentItem)
+    console.log(newC)
+    setCurrentItem(newC)
+  }
+
   
   return (
     <div>
@@ -146,6 +157,8 @@ export function AdminPage() {
           currentItem={currentItem}
           handleSave={handleSave}
           handleUpdate={handleUpdate}
+          handleHistoryDelete={handleHistoryDelete}
+
         />
       )}
     </div>

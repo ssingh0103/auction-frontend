@@ -50,12 +50,12 @@ export default function App() {
           path="/"
           render={props => <HomePage {...props} user={user} />}
         />
-        <Route
+        {true && <Route
           exact
           path="/details/:guid"
-          render={props => <ItemPage {...props} user={user} />}
-        />
-        <Route exact path="/admin" component={AdminPage} />
+          render={props =>  <ItemPage {...props} user={user} />}
+        />}
+        {true && <Route exact path="/admin" component={AdminPage} />}
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
