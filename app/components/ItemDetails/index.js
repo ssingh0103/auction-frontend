@@ -18,7 +18,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-
+import {backendUrl} from '../../constants'
 const useStyles = makeStyles({
   card: {
     minWidth: '100%',
@@ -113,6 +113,7 @@ export default function ItemDetails({ currentItem, bidHandler, isLoggedIn }) {
 
   // Sytling for Card
   const classes = useStyles();
+  let imgS = backendUrl+'/'+currentItem.images[0];
 
   return (
     <StyledDiv>
@@ -120,7 +121,7 @@ export default function ItemDetails({ currentItem, bidHandler, isLoggedIn }) {
         <CardActionArea>
           <CardMedia
             className={classes.media}
-            image="/static/images/cards/contemplative-reptile.jpg"
+            image={imgS}
             title="Contemplative Reptile"
           />
           <CardContent className={classes.content}>

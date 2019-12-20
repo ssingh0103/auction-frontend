@@ -18,6 +18,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import {backendUrl} from '../../constants';
 
 const useStyles = makeStyles({
   card: {
@@ -25,8 +26,10 @@ const useStyles = makeStyles({
   },
   media: {
     height: 400,
+    width:400,
     backgroundColor: '#E5E5E5',
     margin: 12,
+    marginLeft: 195,
   },
   identifier: {
     fontSize: 12,
@@ -133,16 +136,18 @@ export default function ListItem({
 
   // Sytling for Card
   const classes = useStyles();
-
+  let imgS = backendUrl+'/'+currentItem.images[0];
+  console.log(imgS)
   return (
     <StyledDiv>
       <Card className={classes.card}>
         <CardActionArea onClick={clickHandler}>
           <CardMedia
             className={classes.media}
-            image="/static/images/cards/contemplative-reptile.jpg"
+            image={imgS}
             title="Contemplative Reptile"
           />
+          {/* <img src={imgS} height={400}/> */}
           <CardContent className={classes.content}>
             <Typography variant="h5" component="h2">
               {title}
